@@ -1,0 +1,5 @@
+QianBao\BillTradingPlatform\App.class
+QianBao\BillTradingPlatform\Controller\test.class
+QianBao\BillTradingPlatform\Service\testService.class
+QianBao\BillTradingPlatform\Entity\testEntity.class
+QianBao\BillTradingPlatform\Entity\User.class
