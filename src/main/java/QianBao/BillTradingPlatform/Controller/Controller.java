@@ -7,6 +7,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import QianBao.BillTradingPlatform.Entity.Account;
+import QianBao.BillTradingPlatform.Entity.Payment;
 import QianBao.BillTradingPlatform.Entity.User;
 import QianBao.BillTradingPlatform.Service.*;
 
@@ -41,7 +43,37 @@ public class Controller {
 		new_user.setUser_EnterpriseRegistrID(User_EnterpriseRegistrID);
 		new_user.setUser_EnterpriseType(User_EnterprisetType);
 		new_user.setUser_EnterpriseAddress(User_EnterprisetAddress);
-		new_user.setUser_AccountID(RestService.getSequence("tb_account")+1);
+		if (!RestService.putAccount(new Account()))
+			return "failure";
+		new_user.setUser_AccountID(RestService.getSequence("tb_account"));
 		return RestService.putUser(new_user) ? "success" : "failure";
+	}
+
+	@RequestMapping("/getUsersBySize")
+	public List<User> getUsersBySize(int size) {
+		return null;
+	}
+
+	@RequestMapping("/getUserByID")
+	public Object getUserByID(@RequestParam("ID") long id) {
+		return RestService.getByID(id, "tb_user");
+	}
+
+	@RequestMapping("/pay")
+	public Object pay(@RequestParam("User_ID") long User_ID,
+			@RequestParam("Payment_Sum") double Payment_Sum) {
+		return RestService.pay(User_ID, Payment_Sum);
+	}
+
+	@RequestMapping("/payResult")
+	public String payResult(@RequestParam("result") boolean result,
+			@RequestParam("Payment_ID") long Payment_ID) {
+		if (result) {
+			if (RestService.payResponse(Payment_ID))
+				return "success";
+			else
+				return "failure";
+		} else
+			return "failure";
 	}
 }

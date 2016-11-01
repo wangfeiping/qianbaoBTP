@@ -3,6 +3,7 @@ package QianBao.BillTradingPlatform.Service;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
+import java.util.Map;
 
 import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,6 +12,7 @@ import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Service;
 
 import QianBao.BillTradingPlatform.Entity.Account;
+import QianBao.BillTradingPlatform.Entity.Payment;
 import QianBao.BillTradingPlatform.Entity.User;
 import QianBao.BillTradingPlatform.Entity.testEntity;
 
@@ -48,7 +50,17 @@ public class RestService {
 	}
 
 	public boolean putAccount(Account account) {
-		return true;
+		try {
+			jdbcTemplate
+					.update("insert into tb_account(Account_GuaranteedID,Account_CreditID) values(?,?)",
+							new Object[] { account.getAccount_GuaranteedID(),
+									account.getAccount_CreditID() });
+			return true;
+		} catch (Exception e) {
+			System.out.println(e);
+			return false;
+		}
+
 	};
 
 	public int getSequence(String table) {
@@ -63,5 +75,37 @@ public class RestService {
 		if (list.isEmpty())
 			return 0;
 		return list.get(0);
+	}
+
+	public Object getByID(long id, String table) {
+		String sql = "select * from " + table;
+		List<Map<String, Object>> list = jdbcTemplate.queryForList(sql);
+		if (list.isEmpty())
+			return null;
+		return list.get(0);
+	}
+
+	public Object pay(long User_ID, double Payment_Sum) {
+		try {
+			jdbcTemplate
+					.update("insert into tb_payment(Payment_UserID,Payment_State,Payment_Sum) values(?,?,?)",
+							new Object[] { User_ID, "1", Payment_Sum });
+			List<Map<String, Object>> list = jdbcTemplate
+					.queryForList("select * from tb_payment where payment_id= "
+							+ getSequence("tb_payment"));
+			return list.isEmpty() ? null : list.get(0);
+		} catch (Exception e) {
+			return null;
+		}
+	}
+
+	public boolean payResponse(long Payment_ID) {
+		try {
+			jdbcTemplate.update("update tb_payment(Payment_State) values(2)");
+			// 操作区块链;
+			return true;
+		} catch (Exception e) {
+			return false;
+		}
 	}
 }
