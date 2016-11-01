@@ -2,8 +2,6 @@ package QianBao.BillTradingPlatform.Entity;
 
 import java.io.Serializable;
 
-import com.sun.accessibility.internal.resources.accessibility;
-
 /**
  * 测试样例
  * 
