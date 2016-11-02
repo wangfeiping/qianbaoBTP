@@ -16,6 +16,8 @@ public class User implements Serializable {
 
 	private long User_ID;
 	private long User_AccountID;
+	private long User_GuaranteedID;
+	private long User_CreditID;
 	private String User_Name;
 	private String User_Password;
 	private String User_State;
@@ -34,6 +36,22 @@ public class User implements Serializable {
 
 	public long getUser_AccountID() {
 		return User_AccountID;
+	}
+
+	public long getUser_GuaranteedID() {
+		return User_GuaranteedID;
+	}
+
+	public void setUser_GuaranteedID(long user_GuaranteedID) {
+		User_GuaranteedID = user_GuaranteedID;
+	}
+
+	public long getUser_CreditID() {
+		return User_CreditID;
+	}
+
+	public void setUser_CreditID(long user_CreditID) {
+		User_CreditID = user_CreditID;
 	}
 
 	public void setUser_AccountID(long user_AccountID) {

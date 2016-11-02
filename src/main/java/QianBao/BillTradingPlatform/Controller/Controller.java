@@ -27,6 +27,7 @@ public class Controller {
 	@Autowired
 	private RestService RestService;
 
+	/* 会员注册 */
 	@RequestMapping("/UserRegister")
 	public String UserRegister(
 			@RequestParam("User_Name") String User_Name,
@@ -44,7 +45,6 @@ public class Controller {
 		new_user.setUser_EnterpriseRegistrID(User_EnterpriseRegistrID);
 		new_user.setUser_EnterpriseType(User_EnterprisetType);
 		new_user.setUser_EnterpriseAddress(User_EnterprisetAddress);
-		new_user.setUser_AccountID(RestService.initAccount(new Account()));
 		return RestService.initUser(new_user) != 0 ? "success" : "failure";
 	}
 
@@ -53,11 +53,13 @@ public class Controller {
 		return null;
 	}
 
+	/* 查看指定会员信息 */
 	@RequestMapping("/getUserByID")
-	public Object getUserByID(@RequestParam("ID") long id) {
-		return RestService.getByID(id, "tb_user");
+	public Object getUserByID(@RequestParam("User_ID") long id) {
+		return RestService.getByID(id, "user");
 	}
 
+	/* 充值 */
 	@RequestMapping("/pay")
 	public Object pay(@RequestParam("User_ID") long User_ID,
 			@RequestParam("Payment_Sum") double Payment_Sum) {

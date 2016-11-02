@@ -19,7 +19,6 @@ import QianBao.BillTradingPlatform.Entity.User;
 import QianBao.BillTradingPlatform.Entity.testEntity;
 
 /**
- * 测试案例
  * 
  * @author 胥月
  * @create 2016.11.1
@@ -33,16 +32,21 @@ public class RestService {
 
 	public long initUser(User user) {
 		try {
-			jdbcTemplate
-					.update("insert into tb_user(User_Name,User_Password,User_State,User_AccountID,User_EnterpriseName,User_EnterpriseRegistrID,User_EnterprisetType,User_EnterprisetAddress) values(?,?,?,?,?,?,?,?)",
-							new Object[] { user.getUser_Name(),
-									user.getUser_Password(),
-									user.getUser_State(),
-									user.getUser_AccountID(),
-									user.getUser_EnterpriseName(),
-									user.getUser_EnterpriseRegistrID(),
-									user.getUser_EnterpriseType(),
-									user.getUser_EnterpriseAddress() });
+			jdbcTemplate.update(
+					"insert into tb_user(User_Name,User_Password,User_State,"
+							+ "User_AccountID,User_GuaranteedID,User_CreditID,"
+							+ "User_EnterpriseName,User_EnterpriseRegistrID,"
+							+ "User_EnterprisetType,User_EnterprisetAddress) "
+							+ "values(?,?,?,?,?,?,?,?,?,?)",
+					new Object[] { user.getUser_Name(),
+							user.getUser_Password(), user.getUser_State(),
+							initAccount(new Account()),
+							initGuaranteed(new Guaranteed()),
+							initCredit(new Credit()),
+							user.getUser_EnterpriseName(),
+							user.getUser_EnterpriseRegistrID(),
+							user.getUser_EnterpriseType(),
+							user.getUser_EnterpriseAddress() });
 			return getSequence("tb_user");
 		} catch (Exception e) {
 			System.out.println(e);
@@ -53,12 +57,10 @@ public class RestService {
 
 	public long initAccount(Account account) {
 		try {
-			jdbcTemplate
-					.update("insert into tb_account(Account_GuaranteedID,Account_CreditID) values(?,?)",
-							new Object[] { account.init(),
-									account.getAccount_CreditID() });
+			jdbcTemplate.update(
+					"insert into tb_account(Account_Sum) values(?)",
+					new Object[] { account.getAccount_Sum() });
 			return getSequence("tb_account");
-			;
 		} catch (Exception e) {
 			System.out.println(e);
 			return 0;
@@ -69,9 +71,9 @@ public class RestService {
 	public long initGuaranteed(Guaranteed Guaranteed) {
 		try {
 			jdbcTemplate
-					.update("insert into tb_guaranteed(Guaranteed_UserID,Guaranteed_Limit) values(?,?)",
-							new Object[] { Guaranteed.getGuaranteed_UserID(),
-									Guaranteed.getGuaranteed_Limit() });
+					.update("insert into tb_guaranteed(Guaranteed_Limit,Guaranteed_State) values(?,?)",
+							new Object[] { Guaranteed.getGuaranteed_Limit(),
+									Guaranteed.getGuaranteed_State() });
 			return getSequence("tb_guaranteed");
 		} catch (Exception e) {
 			System.out.println(e);
@@ -81,7 +83,17 @@ public class RestService {
 	};
 
 	public long initCredit(Credit Credit) {
-		return 0;
+		try {
+			jdbcTemplate
+					.update("insert into tb_credit(Credit_Limit,Credit_State,Credit_CreditOrganizationID) values(?,?,?)",
+							new Object[] { Credit.getCredit_Limit(),
+									Credit.getCredit_State(),
+									Credit.getCredit_CreditOrganizationID() });
+			return getSequence("tb_guaranteed");
+		} catch (Exception e) {
+			System.out.println(e);
+			return 0;
+		}
 	};
 
 	public int getSequence(String table) {
@@ -99,7 +111,7 @@ public class RestService {
 	}
 
 	public Object getByID(long id, String table) {
-		String sql = "select * from " + table;
+		String sql = "select * from tb_" + table + " where " + table + "_id=" + id;
 		List<Map<String, Object>> list = jdbcTemplate.queryForList(sql);
 		if (list.isEmpty())
 			return null;

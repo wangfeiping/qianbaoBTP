@@ -10,8 +10,8 @@ public class Credit implements Serializable {
 	private static final long serialVersionUID = 8492865149961078070L;
 
 	private long Credit_ID;
-	private long Credit_UserID;
 	private double Credit_Limit;
+	private String Credit_State;
 	private long Credit_CreditOrganizationID;
 
 	public long getCredit_ID() {
@@ -22,20 +22,20 @@ public class Credit implements Serializable {
 		Credit_ID = credit_ID;
 	}
 
-	public long getCredit_UserID() {
-		return Credit_UserID;
-	}
-
-	public void setCredit_UserID(long credit_UserID) {
-		Credit_UserID = credit_UserID;
-	}
-
 	public double getCredit_Limit() {
 		return Credit_Limit;
 	}
 
 	public void setCredit_Limit(double credit_Limit) {
 		Credit_Limit = credit_Limit;
+	}
+
+	public String getCredit_State() {
+		return Credit_State;
+	}
+
+	public void setCredit_State(String credit_State) {
+		Credit_State = credit_State;
 	}
 
 	public long getCredit_CreditOrganizationID() {

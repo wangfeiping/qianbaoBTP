@@ -38,7 +38,7 @@ create table TB_Bill(
 -- 用户账户表
 create table TB_Account(
 	Account_ID bigint primary key AUTO_INCREMENT,-- 用户账户编号
-	Account_Sum bigint-- 会员账户资金
+	Account_Sum decimal(20,2)-- 会员账户资金
 );
 
 -- 担保账户表
@@ -67,6 +67,7 @@ create table TB_CreditRecord(
 	CreditRecord_ID bigint primary key AUTO_INCREMENT,-- 授信记录编号
 	CreditRecord_CreditOrganizationID bigint,-- 授信机构编号
 	CreditRecord_UserID bigint,-- 被授信会员编号
+	CreditRecord_Repeal varchar(100),-- 是否是撤销授信
 	CreditRecord_Limit decimal(20,2),-- 授信额度
 	CreditRecord_Timestamp timestamp-- 授信时间
 );
