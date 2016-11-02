@@ -31,7 +31,7 @@ public class RestService {
 	private JdbcTemplate jdbcTemplate;
 	private Logger logger;
 
-	public boolean initUser(User user) {
+	public long initUser(User user) {
 		try {
 			jdbcTemplate
 					.update("insert into tb_user(User_Name,User_Password,User_State,User_AccountID,User_EnterpriseName,User_EnterpriseRegistrID,User_EnterprisetType,User_EnterprisetAddress) values(?,?,?,?,?,?,?,?)",
@@ -43,44 +43,45 @@ public class RestService {
 									user.getUser_EnterpriseRegistrID(),
 									user.getUser_EnterpriseType(),
 									user.getUser_EnterpriseAddress() });
-			return true;
+			return getSequence("tb_user");
 		} catch (Exception e) {
 			System.out.println(e);
-			return false;
+			return 0;
 		}
 
 	}
 
-	public boolean initAccount(Account account) {
+	public long initAccount(Account account) {
 		try {
 			jdbcTemplate
 					.update("insert into tb_account(Account_GuaranteedID,Account_CreditID) values(?,?)",
-							new Object[] { account.getAccount_GuaranteedID(),
+							new Object[] { account.init(),
 									account.getAccount_CreditID() });
-			return true;
+			return getSequence("tb_account");
+			;
 		} catch (Exception e) {
 			System.out.println(e);
-			return false;
+			return 0;
 		}
 
 	}
 
-	public boolean initGuaranteed(Guaranteed Guaranteed) {
+	public long initGuaranteed(Guaranteed Guaranteed) {
 		try {
 			jdbcTemplate
 					.update("insert into tb_guaranteed(Guaranteed_UserID,Guaranteed_Limit) values(?,?)",
 							new Object[] { Guaranteed.getGuaranteed_UserID(),
 									Guaranteed.getGuaranteed_Limit() });
-			return true;
+			return getSequence("tb_guaranteed");
 		} catch (Exception e) {
 			System.out.println(e);
-			return false;
+			return 0;
 		}
 
 	};
 
-	public boolean initCredit(Credit Credit) {
-		return false;
+	public long initCredit(Credit Credit) {
+		return 0;
 	};
 
 	public int getSequence(String table) {

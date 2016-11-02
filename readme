@@ -1,4 +1,6 @@
-Java版本必须是1.7
+﻿Java版本必须是1.7
+
 mysql连接地址不用改，统一连我的mysql数据库
+
 
 接口需求地址http://www.jianshu.com/p/c7004b9be95a

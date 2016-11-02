@@ -1,80 +1,92 @@
-ï»¿-- ä¼šå‘˜è¡¨
+/*
+DROP TABLE IF EXISTS TB_User;
+DROP TABLE TB_Bill;
+DROP TABLE TB_Account;
+DROP TABLE TB_Guaranteed;
+DROP TABLE TB_Credit;
+DROP TABLE TB_Payment;
+DROP TABLE TB_Deal;
+DROP TABLE TB_CreditOrganization;
+*/
+
+-- »áÔ±±í
 create table TB_User(
-	User_ID bigint primary key AUTO_INCREMENT,--  ä¼šå‘˜ç¼–å·
-	User_AccountID bigint,-- ä¼šå‘˜å¯¹åº”çš„è´¦æˆ·ç¼–å·
-	User_Name varchar(20),-- ä¼šå‘˜ç™»å½•ç”¨æˆ·å
-	User_Password varchar(32),-- ä¼šå‘˜ç™»å½•å¯†ç 
-	User_State varchar(100),-- ä¼šå‘˜çŠ¶æ€
-	User_EnterpriseName varchar(100),-- ä¼šå‘˜å…¬å¸åç§°
-	User_EnterpriseRegistrID varchar(100),-- ä¼šå‘˜å…¬å¸æ³¨å†Œå·
-	User_EnterprisetType varchar(100),-- ä¼šå‘˜å…¬å¸ç±»å‹
-	User_EnterprisetAddress varchar(100)-- ä¼šå‘˜å…¬å¸åœ°å€
+	User_ID bigint primary key AUTO_INCREMENT,--  »áÔ±±àºÅ
+	User_AccountID bigint,-- »áÔ±¶ÔÓ¦µÄÕË»§±àºÅ
+	User_GuaranteedID bigint,-- »áÔ±¶ÔÓ¦µÄµ£±£ÕË»§±àºÅ
+	User_CreditID bigint,-- »áÔ±¶ÔÓ¦µÄÊÚĞÅÕË»§±àºÅ
+	User_Name varchar(20),-- »áÔ±µÇÂ¼ÓÃ»§Ãû
+	User_Password varchar(32),-- »áÔ±µÇÂ¼ÃÜÂë
+	User_State varchar(100),-- »áÔ±×´Ì¬
+	User_EnterpriseName varchar(100),-- »áÔ±¹«Ë¾Ãû³Æ
+	User_EnterpriseRegistrID varchar(100),-- »áÔ±¹«Ë¾×¢²áºÅ
+	User_EnterprisetType varchar(100),-- »áÔ±¹«Ë¾ÀàĞÍ
+	User_EnterprisetAddress varchar(100)-- »áÔ±¹«Ë¾µØÖ·
 
 );
 
--- ç¥¨æ®è¡¨
+-- Æ±¾İ±í
 create table TB_Bill(
-	Bill_ID bigint primary key AUTO_INCREMENT,-- ç¥¨æ®ç¼–å·
-	Bill_UserID bigint,-- ç¥¨æ®æ‰€æœ‰è€…ç”¨æˆ·ç¼–å·
-	Bill_Denomination decimal(20,2),-- ç¥¨æ®é¢é¢
-	Bill_Price decimal(20,2),-- ç¥¨æ®å‡ºå”®ä»·æ ¼
-	Bill_AcceptingBank varchar(100),-- ç¥¨æ®æ‰¿å…‘è¡Œ
-	Bill_State varchar(100)-- ç¥¨æ®çŠ¶æ€
+	Bill_ID bigint primary key AUTO_INCREMENT,-- Æ±¾İ±àºÅ
+	Bill_UserID bigint,-- Æ±¾İËùÓĞÕßÓÃ»§±àºÅ
+	Bill_Denomination decimal(20,2),-- Æ±¾İÃæ¶î
+	Bill_Price decimal(20,2),-- Æ±¾İ³öÊÛ¼Û¸ñ
+	Bill_AcceptingBank varchar(100),-- Æ±¾İ³Ğ¶ÒĞĞ
+	Bill_State varchar(100)-- Æ±¾İ×´Ì¬
 );
 
--- ç”¨æˆ·è´¦æˆ·è¡¨
+-- ÓÃ»§ÕË»§±í
 create table TB_Account(
-	Account_ID bigint primary key AUTO_INCREMENT,-- ç”¨æˆ·è´¦æˆ·ç¼–å·
-	Account_GuaranteedID bigint,-- æ‹…ä¿è´¦æˆ·ç¼–å·
-	Account_CreditID bigint-- æˆä¿¡è´¦æˆ·ç¼–å·
+	Account_ID bigint primary key AUTO_INCREMENT,-- ÓÃ»§ÕË»§±àºÅ
+	Account_Sum bigint-- »áÔ±ÕË»§×Ê½ğ
 );
 
--- æ‹…ä¿è´¦æˆ·è¡¨
+-- µ£±£ÕË»§±í
 create table TB_Guaranteed(
-	Guaranteed_ID bigint primary key AUTO_INCREMENT,-- æ‹…ä¿è´¦æˆ·ç¼–å·
-	Guaranteed_UserID bigint,-- æ‹…ä¿è´¦æˆ·æ‰€æœ‰äººç¼–å·
-	Guaranteed_Limit decimal(20,2)-- æ‹…ä¿é¢åº¦
+	Guaranteed_ID bigint primary key AUTO_INCREMENT,-- µ£±£ÕË»§±àºÅ
+	Guaranteed_Limit decimal(20,2),-- µ£±£¶î¶È
+	Guaranteed_State varchar(100)-- µ£±£ÕË»§×´Ì¬
 );
 
--- æˆä¿¡è´¦æˆ·è¡¨
+-- ÊÚĞÅÕË»§±í
 create table TB_Credit(
-	Credit_ID bigint primary key AUTO_INCREMENT,-- æˆä¿¡è´¦æˆ·ç¼–å·
-	Credit_UserID bigint,-- æˆä¿¡è´¦æˆ·æ‰€æœ‰äººä¼šå‘˜ç¼–å·
-	Credit_Limit decimal(20,2),-- æˆä¿¡é¢åº¦
-	Credit_CreditOrganizationID varchar(100)-- æˆä¿¡æœºæ„ç¼–å·
+	Credit_ID bigint primary key AUTO_INCREMENT,-- ÊÚĞÅÕË»§±àºÅ
+	Credit_Limit decimal(20,2),-- ÊÚĞÅ¶î¶È
+	Credit_State varchar(100),-- ÊÚĞÅÕË»§×´Ì¬
+	Credit_CreditOrganizationID bigint-- ÊÚĞÅ»ú¹¹±àºÅ
 );
 
--- æˆä¿¡æœºæ„è¡¨
+-- ÊÚĞÅ»ú¹¹±í
 create table TB_CreditOrganization(
-	CreditOrganization_ID bigint primary key AUTO_INCREMENT,-- æˆä¿¡æœºæ„ç¼–å·
-	CreditOrganization_Name varchar(100)-- æˆä¿¡æœºæ„åç§°
+	CreditOrganization_ID bigint primary key AUTO_INCREMENT,-- ÊÚĞÅ»ú¹¹±àºÅ
+	CreditOrganization_Name varchar(100)-- ÊÚĞÅ»ú¹¹Ãû³Æ
 );
 
--- æˆä¿¡è®°å½•è¡¨
+-- ÊÚĞÅ¼ÇÂ¼±í
 create table TB_CreditRecord(
-	CreditRecord_ID bigint primary key AUTO_INCREMENT,-- æˆä¿¡è®°å½•ç¼–å·
-	CreditRecord_CreditOrganizationID bigint,-- æˆä¿¡æœºæ„ç¼–å·
-	CreditRecord_UserID bigint,-- è¢«æˆä¿¡ä¼šå‘˜ç¼–å·
-	CreditRecord_Limit decimal(20,2),-- æˆä¿¡é¢åº¦
-	CreditRecord_Timestamp timestamp-- æˆä¿¡æ—¶é—´
+	CreditRecord_ID bigint primary key AUTO_INCREMENT,-- ÊÚĞÅ¼ÇÂ¼±àºÅ
+	CreditRecord_CreditOrganizationID bigint,-- ÊÚĞÅ»ú¹¹±àºÅ
+	CreditRecord_UserID bigint,-- ±»ÊÚĞÅ»áÔ±±àºÅ
+	CreditRecord_Limit decimal(20,2),-- ÊÚĞÅ¶î¶È
+	CreditRecord_Timestamp timestamp-- ÊÚĞÅÊ±¼ä
 );
 
--- æ”¯ä»˜è®¢å•è¡¨
+-- Ö§¸¶¶©µ¥±í
 create table TB_Payment(
-	Payment_ID bigint primary key AUTO_INCREMENT,-- æ”¯ä»˜è®¢å•ç¼–å·
-	Payment_UserID bigint,-- æ”¯ä»˜äººç”¨æˆ·ç¼–å·
-	Payment_ApplyTime timestamp,-- æ”¯ä»˜è®¢å•ç”Ÿæˆæ—¶é—´
-	Payment_State varchar(100),-- æ”¯ä»˜è®¢å•çŠ¶æ€
-	Payment_Sum decimal(20,2)-- æ”¯ä»˜é‡‘é¢
+	Payment_ID bigint primary key AUTO_INCREMENT,-- Ö§¸¶¶©µ¥±àºÅ
+	Payment_UserID bigint,-- Ö§¸¶ÈËÓÃ»§±àºÅ
+	Payment_ApplyTime timestamp,-- Ö§¸¶¶©µ¥Éú³ÉÊ±¼ä
+	Payment_State varchar(100),-- Ö§¸¶¶©µ¥×´Ì¬
+	Payment_Sum decimal(20,2)-- Ö§¸¶½ğ¶î
 );
 
--- äº¤æ˜“ä¿¡æ¯è¡¨
+-- ½»Ò×ĞÅÏ¢±í
 create table TB_Deal(
-	Deal_ID bigint primary key AUTO_INCREMENT,-- äº¤æ˜“ä¿¡æ¯ç¼–å·
-	Deal_SellerID bigint,-- å–æ–¹ä¼šå‘˜ç¼–å·
-	Deal_BuyerID bigint,-- ä¹°æ–¹ä¼šå‘˜ç¼–å·
-	Deal_BillID bigint,-- äº¤æ˜“ç¥¨æ®ç¼–å·
-	Deal_Time timestamp-- äº¤æ˜“æ—¶é—´
+	Deal_ID bigint primary key AUTO_INCREMENT,-- ½»Ò×ĞÅÏ¢±àºÅ
+	Deal_SellerID bigint,-- Âô·½»áÔ±±àºÅ
+	Deal_BuyerID bigint,-- Âò·½»áÔ±±àºÅ
+	Deal_BillID bigint,-- ½»Ò×Æ±¾İ±àºÅ
+	Deal_Time timestamp-- ½»Ò×Ê±¼ä
 );
 
 

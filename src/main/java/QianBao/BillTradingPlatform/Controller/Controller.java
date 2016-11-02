@@ -44,10 +44,8 @@ public class Controller {
 		new_user.setUser_EnterpriseRegistrID(User_EnterpriseRegistrID);
 		new_user.setUser_EnterpriseType(User_EnterprisetType);
 		new_user.setUser_EnterpriseAddress(User_EnterprisetAddress);
-		if (!RestService.initAccount(new Account()))
-			return "failure";
-		new_user.setUser_AccountID(RestService.getSequence("tb_account"));
-		return RestService.initUser(new_user) ? "success" : "failure";
+		new_user.setUser_AccountID(RestService.initAccount(new Account()));
+		return RestService.initUser(new_user) != 0 ? "success" : "failure";
 	}
 
 	@RequestMapping("/getUsersBySize")
