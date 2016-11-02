@@ -121,8 +121,6 @@ public class RestService {
 		return list.get(0);
 	}
 
-
-
 	public boolean payResponse(long Payment_ID) {
 		try {
 			jdbcTemplate
@@ -133,12 +131,16 @@ public class RestService {
 			return false;
 		}
 	}
-	
-	public long initBill(Bill bill ) {
+
+	public long initBill(Bill bill) {
 		try {
 			jdbcTemplate
 					.update("insert into tb_bill(Bill_UserID,Bill_Denomination,Bill_price,bill_AcceptingBank,bill_State) values(?,?,?,?,?)",
-							new Object[] { bill.getBill_UserID(),bill.getBill_Denomination(),bill.getBill_price(),bill.getBill_AcceptingBank(),bill.getBill_State() });
+							new Object[] { bill.getBill_UserID(),
+									bill.getBill_Denomination(),
+									bill.getBill_price(),
+									bill.getBill_AcceptingBank(),
+									bill.getBill_State() });
 			return getSequence("tb_bill");
 		} catch (Exception e) {
 			System.out.println(e);
@@ -147,5 +149,45 @@ public class RestService {
 
 	}
 
+	public Object initPayment(Payment Payment) {
+		try {
+			jdbcTemplate.update(
+					"insert into tb_payment(Payment_UserID,Payment_Type,Payment_State"
+							+ ",Payment_Sum) values(?,?,?,?)",
+					new Object[] { Payment.getPayment_UserID(),
+							Payment.getPayment_Type(),
+							Payment.getPayment_State(),
+							Payment.getPayment_Sum() });
+			List<Map<String, Object>> list = jdbcTemplate
+					.queryForList("select * from tb_payment where payment_id= "
+							+ getSequence("tb_payment"));
+			return list.isEmpty() ? null : list.get(0);
+		} catch (Exception e) {
+			System.out.println(e);
+			return null;
+		}
+	}
+
+	public Object checkBalance(long User_ID) {
+		try {
+			String sql = "select User_AccountID,User_GuaranteedID,User_CreditID from tb_user "
+					+ "where User_ID= " + User_ID;
+			Map<String, Object> map = jdbcTemplate.queryForMap(sql);
+			String sql_account = "select * from tb_account where Account_ID= "
+					+ map.get("User_AccountID").toString();
+			String sql_guaranteed = "select * from tb_guaranteed where Guaranteed_ID= "
+					+ map.get("User_GuaranteedID").toString();
+			String sql_credit = "select * from tb_credit where Credit_ID= "
+					+ map.get("User_CreditID").toString();
+			Map<String, Object> output = new HashMap<String, Object>();
+			output.putAll(jdbcTemplate.queryForMap(sql_account));
+			output.putAll(jdbcTemplate.queryForMap(sql_guaranteed));
+			output.putAll(jdbcTemplate.queryForMap(sql_credit));
+			return output;
+		} catch (Exception e) {
+			System.out.println(e);
+			return null;
+		}
+	}
 
 }
