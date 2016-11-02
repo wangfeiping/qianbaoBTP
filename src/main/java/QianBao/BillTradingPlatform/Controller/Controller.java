@@ -48,6 +48,7 @@ public class Controller {
 		return RestService.initUser(new_user) != 0 ? "success" : "failure";
 	}
 
+	/* 分页查看会员信息 */
 	@RequestMapping("/getUsersBySize")
 	public List<User> getUsersBySize(int size) {
 		return null;
@@ -66,6 +67,7 @@ public class Controller {
 		return RestService.pay(User_ID, Payment_Sum);
 	}
 
+	/* 接收支付结果通知 */
 	@RequestMapping("/payResult")
 	public String payResult(@RequestParam("result") boolean result,
 			@RequestParam("Payment_ID") long Payment_ID) {
@@ -76,5 +78,18 @@ public class Controller {
 				return "failure";
 		} else
 			return "failure";
+	}
+
+	/* 查看余额 */
+	@RequestMapping("/checkBalance")
+	public Object checkBalance(@RequestParam("User_ID") long User_ID) {
+		return RestService.checkBalance(User_ID);
+	}
+
+	/* 提现 */
+	@RequestMapping("/withdrawDeposit")
+	public Object withdrawDeposit(@RequestParam("User_ID") long User_ID,
+			@RequestParam("Sum") double sum) {
+
 	}
 }

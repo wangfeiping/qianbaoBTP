@@ -2,6 +2,7 @@ package QianBao.BillTradingPlatform.Service;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -111,7 +112,8 @@ public class RestService {
 	}
 
 	public Object getByID(long id, String table) {
-		String sql = "select * from tb_" + table + " where " + table + "_id=" + id;
+		String sql = "select * from tb_" + table + " where " + table + "_id="
+				+ id;
 		List<Map<String, Object>> list = jdbcTemplate.queryForList(sql);
 		if (list.isEmpty())
 			return null;
@@ -139,6 +141,28 @@ public class RestService {
 			return true;
 		} catch (Exception e) {
 			return false;
+		}
+	}
+
+	public Object checkBalance(long User_ID) {
+		try {
+			String sql = "select User_AccountID,User_GuaranteedID,User_CreditID from tb_user "
+					+ "where User_ID= " + User_ID;
+			Map<String, Object> map = jdbcTemplate.queryForMap(sql);
+			String sql_account = "select * from tb_account where Account_ID= "
+					+ map.get("User_AccountID").toString();
+			String sql_guaranteed = "select * from tb_guaranteed where Guaranteed_ID= "
+					+ map.get("User_GuaranteedID").toString();
+			String sql_credit = "select * from tb_credit where Credit_ID= "
+					+ map.get("User_CreditID").toString();
+			Map<String, Object> output = new HashMap<String, Object>();
+			output.putAll(jdbcTemplate.queryForMap(sql_account));
+			output.putAll(jdbcTemplate.queryForMap(sql_guaranteed));
+			output.putAll(jdbcTemplate.queryForMap(sql_credit));
+			return output;
+		} catch (Exception e) {
+			System.out.println(e);
+			return null;
 		}
 	}
 }
