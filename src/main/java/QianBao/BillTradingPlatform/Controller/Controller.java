@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import QianBao.BillTradingPlatform.Entity.Account;
+import QianBao.BillTradingPlatform.Entity.Guaranteed;
 import QianBao.BillTradingPlatform.Entity.Payment;
 import QianBao.BillTradingPlatform.Entity.User;
 import QianBao.BillTradingPlatform.Service.*;
@@ -43,10 +44,10 @@ public class Controller {
 		new_user.setUser_EnterpriseRegistrID(User_EnterpriseRegistrID);
 		new_user.setUser_EnterpriseType(User_EnterprisetType);
 		new_user.setUser_EnterpriseAddress(User_EnterprisetAddress);
-		if (!RestService.putAccount(new Account()))
+		if (!RestService.initAccount(new Account()))
 			return "failure";
 		new_user.setUser_AccountID(RestService.getSequence("tb_account"));
-		return RestService.putUser(new_user) ? "success" : "failure";
+		return RestService.initUser(new_user) ? "success" : "failure";
 	}
 
 	@RequestMapping("/getUsersBySize")

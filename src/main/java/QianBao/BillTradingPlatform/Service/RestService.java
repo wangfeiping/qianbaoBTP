@@ -12,6 +12,8 @@ import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Service;
 
 import QianBao.BillTradingPlatform.Entity.Account;
+import QianBao.BillTradingPlatform.Entity.Credit;
+import QianBao.BillTradingPlatform.Entity.Guaranteed;
 import QianBao.BillTradingPlatform.Entity.Payment;
 import QianBao.BillTradingPlatform.Entity.User;
 import QianBao.BillTradingPlatform.Entity.testEntity;
@@ -29,7 +31,7 @@ public class RestService {
 	private JdbcTemplate jdbcTemplate;
 	private Logger logger;
 
-	public boolean putUser(User user) {
+	public boolean initUser(User user) {
 		try {
 			jdbcTemplate
 					.update("insert into tb_user(User_Name,User_Password,User_State,User_AccountID,User_EnterpriseName,User_EnterpriseRegistrID,User_EnterprisetType,User_EnterprisetAddress) values(?,?,?,?,?,?,?,?)",
@@ -49,7 +51,7 @@ public class RestService {
 
 	}
 
-	public boolean putAccount(Account account) {
+	public boolean initAccount(Account account) {
 		try {
 			jdbcTemplate
 					.update("insert into tb_account(Account_GuaranteedID,Account_CreditID) values(?,?)",
@@ -61,6 +63,24 @@ public class RestService {
 			return false;
 		}
 
+	}
+
+	public boolean initGuaranteed(Guaranteed Guaranteed) {
+		try {
+			jdbcTemplate
+					.update("insert into tb_guaranteed(Guaranteed_UserID,Guaranteed_Limit) values(?,?)",
+							new Object[] { Guaranteed.getGuaranteed_UserID(),
+									Guaranteed.getGuaranteed_Limit() });
+			return true;
+		} catch (Exception e) {
+			System.out.println(e);
+			return false;
+		}
+
+	};
+
+	public boolean initCredit(Credit Credit) {
+		return false;
 	};
 
 	public int getSequence(String table) {
