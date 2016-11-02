@@ -76,7 +76,7 @@ create table TB_CreditRecord(
 create table TB_Payment(
 	Payment_ID bigint primary key AUTO_INCREMENT,-- 支付订单编号
 	Payment_UserID bigint,-- 支付人用户编号
-	Payment_Type varchar(100),-- 订单类型（1：充值订单，2：体现订单）
+	Payment_Type varchar(100),-- 订单类型（1：充值订单，2：提现订单）
 	Payment_ApplyTime timestamp,-- 支付订单生成时间
 	Payment_State varchar(100),-- 支付订单状态
 	Payment_Sum decimal(20,2)-- 支付金额

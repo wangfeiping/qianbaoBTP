@@ -120,24 +120,30 @@ public class RestService {
 		return list.get(0);
 	}
 
-	public Object pay(long User_ID, double Payment_Sum) {
+	public Object initPayment(Payment Payment) {
 		try {
-			jdbcTemplate
-					.update("insert into tb_payment(Payment_UserID,Payment_State,Payment_Sum) values(?,?,?)",
-							new Object[] { User_ID, "1", Payment_Sum });
+			jdbcTemplate.update(
+					"insert into tb_payment(Payment_UserID,Payment_Type,Payment_State"
+							+ ",Payment_Sum) values(?,?,?,?)",
+					new Object[] { Payment.getPayment_UserID(),
+							Payment.getPayment_Type(),
+							Payment.getPayment_State(),
+							Payment.getPayment_Sum() });
 			List<Map<String, Object>> list = jdbcTemplate
 					.queryForList("select * from tb_payment where payment_id= "
 							+ getSequence("tb_payment"));
 			return list.isEmpty() ? null : list.get(0);
 		} catch (Exception e) {
+			System.out.println(e);
 			return null;
 		}
 	}
 
 	public boolean payResponse(long Payment_ID) {
 		try {
-			jdbcTemplate.update("update tb_payment(Payment_State) values(2)");
-			// 操作区块链;
+			jdbcTemplate
+					.update("update tb_payment(Payment_State) values(2) where Payment_ID="
+							+ Payment_ID);
 			return true;
 		} catch (Exception e) {
 			return false;

@@ -64,7 +64,12 @@ public class Controller {
 	@RequestMapping("/pay")
 	public Object pay(@RequestParam("User_ID") long User_ID,
 			@RequestParam("Payment_Sum") double Payment_Sum) {
-		return RestService.pay(User_ID, Payment_Sum);
+		Payment payment = new Payment();
+		payment.setPayment_UserID(User_ID);
+		payment.setPayment_Type("1");
+		payment.setPayment_Sum(Payment_Sum);
+		payment.setPayment_State("1");
+		return RestService.initPayment(payment);
 	}
 
 	/* 接收支付结果通知 */
@@ -73,6 +78,7 @@ public class Controller {
 			@RequestParam("Payment_ID") long Payment_ID) {
 		if (result) {
 			if (RestService.payResponse(Payment_ID))
+				// 操作区块链;
 				return "success";
 			else
 				return "failure";
@@ -89,7 +95,13 @@ public class Controller {
 	/* 提现 */
 	@RequestMapping("/withdrawDeposit")
 	public Object withdrawDeposit(@RequestParam("User_ID") long User_ID,
-			@RequestParam("Sum") double sum) {
-
+			@RequestParam("Payment_Sum") double sum) {
+		Payment payment = new Payment();
+		payment.setPayment_UserID(User_ID);
+		payment.setPayment_Type("2");
+		payment.setPayment_Sum(sum);
+		payment.setPayment_State("1");
+		// 调用支付接口
+		return RestService.initPayment(payment);
 	}
 }
