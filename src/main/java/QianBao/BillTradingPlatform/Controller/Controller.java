@@ -14,9 +14,9 @@ import QianBao.BillTradingPlatform.Entity.User;
 import QianBao.BillTradingPlatform.Service.*;
 
 /**
- * å¹³å°Restæ¥å£
+ * Æ½Ì¨Rest½Ó¿Ú
  * 
- * @author èƒ¥æœˆ
+ * @author ñãÔÂ
  * @create 2016.11.1
  * 
  * 
@@ -27,7 +27,7 @@ public class Controller {
 	@Autowired
 	private RestService RestService;
 
-	/* ä¼šå‘˜æ³¨å†Œ */
+	/* »áÔ±×¢²á */
 	@RequestMapping("/UserRegister")
 	public String UserRegister(
 			@RequestParam("User_Name") String User_Name,
@@ -48,19 +48,19 @@ public class Controller {
 		return RestService.initUser(new_user) != 0 ? "success" : "failure";
 	}
 
-	/* åˆ†é¡µæŸ¥çœ‹ä¼šå‘˜ä¿¡æ¯ */
+	/* ·ÖÒ³²é¿´»áÔ±ĞÅÏ¢ */
 	@RequestMapping("/getUsersBySize")
 	public List<User> getUsersBySize(int size) {
 		return null;
 	}
 
-	/* æŸ¥çœ‹æŒ‡å®šä¼šå‘˜ä¿¡æ¯ */
+	/* ²é¿´Ö¸¶¨»áÔ±ĞÅÏ¢ */
 	@RequestMapping("/getUserByID")
 	public Object getUserByID(@RequestParam("User_ID") long id) {
 		return RestService.getByID(id, "user");
 	}
 
-	/* å……å€¼ */
+	/* ³äÖµ */
 	@RequestMapping("/pay")
 	public Object pay(@RequestParam("User_ID") long User_ID,
 			@RequestParam("Payment_Sum") double Payment_Sum) {
@@ -72,13 +72,13 @@ public class Controller {
 		return RestService.initPayment(payment);
 	}
 
-	/* æ¥æ”¶æ”¯ä»˜ç»“æœé€šçŸ¥ */
+	/* ½ÓÊÕÖ§¸¶½á¹ûÍ¨Öª */
 	@RequestMapping("/payResult")
 	public String payResult(@RequestParam("result") boolean result,
 			@RequestParam("Payment_ID") long Payment_ID) {
 		if (result) {
 			if (RestService.payResponse(Payment_ID))
-				// æ“ä½œåŒºå—é“¾;
+				// ²Ù×÷Çø¿éÁ´;
 				return "success";
 			else
 				return "failure";
@@ -86,24 +86,5 @@ public class Controller {
 			return "failure";
 	}
 
-	/* æŸ¥çœ‹ä½™é¢ */
-	@RequestMapping("/checkBalance")
-	public Object checkBalance(@RequestParam("User_ID") long User_ID) {
-		return RestService.checkBalance(User_ID);
-	}
 
-	/* æç° */
-	@RequestMapping("/withdrawDeposit")
-	public Object withdrawDeposit(@RequestParam("User_ID") long User_ID,
-			@RequestParam("Payment_Sum") double sum) {
-		Payment payment = new Payment();
-		payment.setPayment_UserID(User_ID);
-		payment.setPayment_Type("2");
-		payment.setPayment_Sum(sum);
-		payment.setPayment_State("1");
-		// è°ƒç”¨æ”¯ä»˜æ¥å£
-		return RestService.initPayment(payment);
-	}
-	
-	/*æˆä¿¡*/
 }
