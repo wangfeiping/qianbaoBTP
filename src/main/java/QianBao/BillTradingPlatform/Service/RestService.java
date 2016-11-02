@@ -12,6 +12,7 @@ import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Service;
 
 import QianBao.BillTradingPlatform.Entity.Account;
+import QianBao.BillTradingPlatform.Entity.Bill;
 import QianBao.BillTradingPlatform.Entity.Credit;
 import QianBao.BillTradingPlatform.Entity.Guaranteed;
 import QianBao.BillTradingPlatform.Entity.Payment;
@@ -140,5 +141,25 @@ public class RestService {
 		} catch (Exception e) {
 			return false;
 		}
+	}
+	
+
+	public long initBill(Bill bill) {
+		try {
+			jdbcTemplate.update(
+					"insert into tb_bill(Bill_UserID,Bill_Denomination,"
+							+ "Bill_price,bill_AcceptingBank,bill_State) "
+							+ "values(?,?,?,?,?)",
+					new Object[] { bill.getBill_UserID(),
+							bill.getBill_Denomination(),
+							bill.getBill_price(),
+							bill.getBill_AcceptingBank(),
+							bill.getBill_State()});
+			return getSequence("tb_bill");
+		} catch (Exception e) {
+			System.out.println(e);
+			return 0;
+		}
+
 	}
 }

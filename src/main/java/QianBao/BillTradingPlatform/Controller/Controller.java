@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import QianBao.BillTradingPlatform.Entity.Account;
+import QianBao.BillTradingPlatform.Entity.Bill;
 import QianBao.BillTradingPlatform.Entity.Guaranteed;
 import QianBao.BillTradingPlatform.Entity.Payment;
 import QianBao.BillTradingPlatform.Entity.User;
@@ -77,4 +78,27 @@ public class Controller {
 		} else
 			return "failure";
 	}
+	
+	/* 票据录入 */
+	@RequestMapping("/BillInput")
+	public String BillInput(
+			@RequestParam("Bill_UserID") long Bill_UserID,
+			@RequestParam("Bill_Denomination") double Bill_Denomination,
+			@RequestParam("Bill_Price") double Bill_Price,
+			@RequestParam("Bill_AcceptingBank") String Bill_AcceptingBank,
+			@RequestParam("Bill_State") String Bill_State) {
+		Bill new_bill =new Bill();
+		new_bill.setBill_UserID(Bill_UserID);
+		new_bill.setBill_Denomination(Bill_Denomination);
+		new_bill.setBill_price(Bill_Price);
+		new_bill.setBill_AcceptingBank(Bill_AcceptingBank);
+		new_bill.setBill_State(Bill_State);
+		return RestService.initBill(new_bill) != 0 ? "success" : "failure";
+	}
+	/* 查看指定票据 */
+	@RequestMapping("/getBillByID")
+	public Object getBillByID(@RequestParam("Bill_ID") long id) {
+		return RestService.getByID(id, "bill");
+	}
+	
 }
