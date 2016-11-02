@@ -15,9 +15,9 @@ import QianBao.BillTradingPlatform.Entity.User;
 import QianBao.BillTradingPlatform.Service.*;
 
 /**
- * 骞冲彴Rest鎺ュ彛
  * 
- * @author 鑳ユ湀
+ * 
+ * @author Yue.Xu
  * @create 2016.11.1
  * 
  * 
@@ -28,7 +28,6 @@ public class Controller {
 	@Autowired
 	private RestService RestService;
 
-	/* 浼氬憳娉ㄥ唽 */
 	@RequestMapping("/UserRegister")
 	public String UserRegister(
 			@RequestParam("User_Name") String User_Name,
@@ -54,13 +53,11 @@ public class Controller {
 		return null;
 	}
 
-	/* 鏌ョ湅鎸囧畾浼氬憳淇℃伅 */
 	@RequestMapping("/getUserByID")
 	public Object getUserByID(@RequestParam("User_ID") long id) {
 		return RestService.getByID(id, "user");
 	}
 
-	/* 鍏呭� */
 	@RequestMapping("/pay")
 	public Object pay(@RequestParam("User_ID") long User_ID,
 			@RequestParam("Payment_Sum") double Payment_Sum) {
@@ -84,7 +81,6 @@ public class Controller {
 			return "failure";
 	}
 
-	/* 绁ㄦ嵁褰曞叆 */
 	@RequestMapping("/BillInput")
 	public String BillInput(@RequestParam("Bill_UserID") long Bill_UserID,
 			@RequestParam("Bill_Denomination") double Bill_Denomination,
@@ -100,19 +96,16 @@ public class Controller {
 		return RestService.initBill(new_bill) != 0 ? "success" : "failure";
 	}
 
-	/* 鏌ョ湅鎸囧畾绁ㄦ嵁 */
 	@RequestMapping("/getBillByID")
 	public Object getBillByID(@RequestParam("Bill_ID") long id) {
 		return RestService.getByID(id, "bill");
 	}
 
-	/* 查看余额 */
 	@RequestMapping("/checkBalance")
 	public Object checkBalance(@RequestParam("User_ID") long User_ID) {
 		return RestService.checkBalance(User_ID);
 	}
 
-	/* 提现 */
 	@RequestMapping("/withdrawDeposit")
 	public Object withdrawDeposit(@RequestParam("User_ID") long User_ID,
 			@RequestParam("Payment_Sum") double Payment_Sum) {
@@ -121,9 +114,8 @@ public class Controller {
 		payment.setPayment_Type("2");
 		payment.setPayment_Sum(Payment_Sum);
 		payment.setPayment_State("1");
-		// 调用支付接口
+
 		return RestService.initPayment(payment);
 	}
 
-	/* 授信 */
 }

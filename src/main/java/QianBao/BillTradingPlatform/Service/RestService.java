@@ -22,7 +22,7 @@ import QianBao.BillTradingPlatform.Entity.testEntity;
 
 /**
  * 
- * @author ����
+ * @author Yue.Xu
  * @create 2016.11.1
  */
 @Service
