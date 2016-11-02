@@ -190,4 +190,40 @@ public class RestService {
 		}
 	}
 
+	public Object Credit(long CreditOrganization_ID, long User_ID,
+			double Credit_Limit) {
+		try {
+			String sql = "select User_CreditID from tb_user where User_ID="
+					+ User_ID;
+			List<Credit> list = jdbcTemplate.query(sql,
+					new RowMapper<Credit>() {
+
+						@Override
+						public Credit mapRow(ResultSet rs, int rowNum)
+								throws SQLException {
+							Credit credit = new Credit();
+							credit.setCredit_ID(rs.getLong(1));
+							return credit;
+						}
+					});
+			long Credit_ID = list.get(0).getCredit_ID();
+			jdbcTemplate.update(
+					"update tb_credit set Credit_CreditOrganizationID=?,Credit_Limit=?"
+							+ " where Credit_ID=" + Credit_ID, new Object[] {
+							CreditOrganization_ID, Credit_Limit });
+			return getByID(Credit_ID, "credit");
+		} catch (Exception e) {
+			System.out.println(e);
+			return null;
+		}
+	}
+	public Object getByPage(int pageIndex, int pageSize,String table) {
+		String sql = "select * from tb_" + table + " where " + table + "_id>"
+	+(pageSize*(pageIndex-1)) +" and "+ table + "_id<="+(pageSize*pageIndex);
+		List<Map<String, Object>> list = jdbcTemplate.queryForList(sql);
+		if (list.isEmpty())
+			return null;
+		return list;
+	}
+	
 }

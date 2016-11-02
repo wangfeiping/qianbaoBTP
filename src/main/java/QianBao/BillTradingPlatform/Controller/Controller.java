@@ -118,4 +118,17 @@ public class Controller {
 		return RestService.initPayment(payment);
 	}
 
+	@RequestMapping("/credit")
+	public Object Credit(
+			@RequestParam("CreditOrganization_ID") long CreditOrganization_ID,
+			@RequestParam("User_ID") long User_ID,
+			@RequestParam("Credit_Limit") double Credit_Limit) {
+		return RestService.Credit(CreditOrganization_ID, User_ID, Credit_Limit);
+	}
+
+	@RequestMapping("/getUsersByPageIndex")
+	public List<User> getUsersBySize(@RequestParam("pageIndex") int pageIndex,
+			@RequestParam("pageSize") int pageSize) {
+		return (List<User>) RestService.getByPage(pageIndex, pageSize, "user");
+	}
 }

@@ -1,0 +1,9 @@
+Manifest-Version: 1.0
+Implementation-Vendor: Pivotal Software, Inc.
+Implementation-Title: BillTradingPlatform
+Implementation-Version: 1.3.3.RELEASE
+Implementation-Vendor-Id: QianBao
+Build-Jdk: 1.6.0_13
+Built-By: xuyue
+Created-By: Maven Integration for Eclipse
+
