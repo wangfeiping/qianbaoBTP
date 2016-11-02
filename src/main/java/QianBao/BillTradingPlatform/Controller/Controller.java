@@ -64,7 +64,12 @@ public class Controller {
 	@RequestMapping("/pay")
 	public Object pay(@RequestParam("User_ID") long User_ID,
 			@RequestParam("Payment_Sum") double Payment_Sum) {
-		return RestService.pay(User_ID, Payment_Sum);
+		Payment payment = new Payment();
+		payment.setPayment_UserID(User_ID);
+		payment.setPayment_Type("2");
+		payment.setPayment_Sum(Payment_Sum);
+		payment.setPayment_State("1");
+		return RestService.initPayment(payment);
 	}
 
 	@RequestMapping("/payResult")
@@ -110,11 +115,11 @@ public class Controller {
 	/* 提现 */
 	@RequestMapping("/withdrawDeposit")
 	public Object withdrawDeposit(@RequestParam("User_ID") long User_ID,
-			@RequestParam("Payment_Sum") double sum) {
+			@RequestParam("Payment_Sum") double Payment_Sum) {
 		Payment payment = new Payment();
 		payment.setPayment_UserID(User_ID);
 		payment.setPayment_Type("2");
-		payment.setPayment_Sum(sum);
+		payment.setPayment_Sum(Payment_Sum);
 		payment.setPayment_State("1");
 		// 调用支付接口
 		return RestService.initPayment(payment);
