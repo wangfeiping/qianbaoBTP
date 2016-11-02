@@ -8,15 +8,16 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import QianBao.BillTradingPlatform.Entity.Account;
+import QianBao.BillTradingPlatform.Entity.Bill;
 import QianBao.BillTradingPlatform.Entity.Guaranteed;
 import QianBao.BillTradingPlatform.Entity.Payment;
 import QianBao.BillTradingPlatform.Entity.User;
 import QianBao.BillTradingPlatform.Service.*;
 
 /**
- * Æ½Ì¨Rest½Ó¿Ú
+ * å¹³å°Restæ¥å£
  * 
- * @author ñãÔÂ
+ * @author èƒ¥æœˆ
  * @create 2016.11.1
  * 
  * 
@@ -27,7 +28,7 @@ public class Controller {
 	@Autowired
 	private RestService RestService;
 
-	/* »áÔ±×¢²á */
+	/* ä¼šå‘˜æ³¨å†Œ */
 	@RequestMapping("/UserRegister")
 	public String UserRegister(
 			@RequestParam("User_Name") String User_Name,
@@ -48,43 +49,56 @@ public class Controller {
 		return RestService.initUser(new_user) != 0 ? "success" : "failure";
 	}
 
-	/* ·ÖÒ³²é¿´»áÔ±ĞÅÏ¢ */
 	@RequestMapping("/getUsersBySize")
 	public List<User> getUsersBySize(int size) {
 		return null;
 	}
 
-	/* ²é¿´Ö¸¶¨»áÔ±ĞÅÏ¢ */
+	/* æŸ¥çœ‹æŒ‡å®šä¼šå‘˜ä¿¡æ¯ */
 	@RequestMapping("/getUserByID")
 	public Object getUserByID(@RequestParam("User_ID") long id) {
 		return RestService.getByID(id, "user");
 	}
 
-	/* ³äÖµ */
+	/* å……å€¼ */
 	@RequestMapping("/pay")
 	public Object pay(@RequestParam("User_ID") long User_ID,
 			@RequestParam("Payment_Sum") double Payment_Sum) {
-		Payment payment = new Payment();
-		payment.setPayment_UserID(User_ID);
-		payment.setPayment_Type("1");
-		payment.setPayment_Sum(Payment_Sum);
-		payment.setPayment_State("1");
-		return RestService.initPayment(payment);
+		return RestService.pay(User_ID, Payment_Sum);
 	}
 
-	/* ½ÓÊÕÖ§¸¶½á¹ûÍ¨Öª */
 	@RequestMapping("/payResult")
 	public String payResult(@RequestParam("result") boolean result,
 			@RequestParam("Payment_ID") long Payment_ID) {
 		if (result) {
 			if (RestService.payResponse(Payment_ID))
-				// ²Ù×÷Çø¿éÁ´;
 				return "success";
 			else
 				return "failure";
 		} else
 			return "failure";
 	}
-
-
+	
+	/* ç¥¨æ®å½•å…¥ */
+	@RequestMapping("/BillInput")
+	public String BillInput(
+			@RequestParam("Bill_UserID") long Bill_UserID,
+			@RequestParam("Bill_Denomination") double Bill_Denomination,
+			@RequestParam("Bill_Price") double Bill_Price,
+			@RequestParam("Bill_AcceptingBank") String Bill_AcceptingBank,
+			@RequestParam("Bill_State") String Bill_State) {
+		Bill new_bill =new Bill();
+		new_bill.setBill_UserID(Bill_UserID);
+		new_bill.setBill_Denomination(Bill_Denomination);
+		new_bill.setBill_price(Bill_Price);
+		new_bill.setBill_AcceptingBank(Bill_AcceptingBank);
+		new_bill.setBill_State(Bill_State);
+		return RestService.initBill(new_bill) != 0 ? "success" : "failure";
+	}
+	/* æŸ¥çœ‹æŒ‡å®šç¥¨æ® */
+	@RequestMapping("/getBillByID")
+	public Object getBillByID(@RequestParam("Bill_ID") long id) {
+		return RestService.getByID(id, "bill");
+	}
+	
 }
