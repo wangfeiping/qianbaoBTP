@@ -2,6 +2,7 @@ package QianBao.BillTradingPlatform.Service;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Timestamp;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -220,6 +221,35 @@ public class RestService {
 	public Object getByPage(int pageIndex, int pageSize,String table) {
 		String sql = "select * from tb_" + table + " where " + table + "_id>"
 	+(pageSize*(pageIndex-1)) +" and "+ table + "_id<="+(pageSize*pageIndex);
+		List<Map<String, Object>> list = jdbcTemplate.queryForList(sql);
+		if (list.isEmpty())
+			return null;
+		return list;
+	}
+	
+	public Object getByPageTime(int pageIndex, int pageSize,Timestamp startTime,Timestamp endTime,String table) {
+		String sql = "select * from tb_" + table + " where " + table + "_id>"
+	+(pageSize*(pageIndex-1)) +" and "+ table + "_id<="+(pageSize*pageIndex)
+	+" and "+ table + "_Timestamp>='"+startTime+"' and "+ table + "_Timestamp<='"+endTime+"'";
+		List<Map<String, Object>> list = jdbcTemplate.queryForList(sql);
+		if (list.isEmpty())
+			return null;
+		return list;
+	}
+	public Object getByPage1(int pageIndex, int pageSize,long conditionvalue,String condition,String table) {
+		String sql = "select * from tb_" + table + " where " + table + "_id>"
+	+(pageSize*(pageIndex-1)) +" and "+ table + "_id<="+(pageSize*pageIndex)
+	+" and "+ table + "_"+condition+" = "+ conditionvalue ;
+		List<Map<String, Object>> list = jdbcTemplate.queryForList(sql);
+		if (list.isEmpty())
+			return null;
+		return list;
+	}
+	public Object getByPage2(int pageIndex, int pageSize,long conditionvalue1,String condition1,long conditionvalue2,String condition2,String table) {
+		String sql = "select * from tb_" + table + " where " + table + "_id>"
+	+(pageSize*(pageIndex-1)) +" and "+ table + "_id<="+(pageSize*pageIndex)
+	+" and "+ table + "_"+condition1+" = "+ conditionvalue1
+	+" and "+ table + "_"+condition2+" = "+ conditionvalue2;
 		List<Map<String, Object>> list = jdbcTemplate.queryForList(sql);
 		if (list.isEmpty())
 			return null;
