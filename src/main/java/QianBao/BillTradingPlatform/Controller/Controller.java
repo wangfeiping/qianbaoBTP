@@ -1,5 +1,6 @@
 package QianBao.BillTradingPlatform.Controller;
 
+import java.sql.Timestamp;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,6 +10,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import QianBao.BillTradingPlatform.Entity.Account;
 import QianBao.BillTradingPlatform.Entity.Bill;
+import QianBao.BillTradingPlatform.Entity.CreditRecord;
 import QianBao.BillTradingPlatform.Entity.Guaranteed;
 import QianBao.BillTradingPlatform.Entity.Payment;
 import QianBao.BillTradingPlatform.Entity.User;
@@ -129,6 +131,42 @@ public class Controller {
 	@RequestMapping("/getUsersByPageIndex")
 	public List<User> getUsersBySize(@RequestParam("pageIndex") int pageIndex,
 			@RequestParam("pageSize") int pageSize) {
-		return (List<User>) RestService.getByPage(pageIndex, pageSize, "user");
+		return (List<User>) RestService.getByPage(pageIndex, pageSize, "User");
+	}
+	
+	@RequestMapping("/getCreditRecordByPageIndex")
+	public List<CreditRecord> getCreditRecordByPageIndex(@RequestParam("pageIndex") int pageIndex,
+			@RequestParam("pageSize") int pageSize) {
+		return (List<CreditRecord>) RestService.getByPage(pageIndex, pageSize, "CreditRecord");
+	}
+	@RequestMapping("/getCreditRecordByPageTime")
+	public List<CreditRecord> getCreditRecordByPageTime(@RequestParam("pageIndex") int pageIndex,
+			@RequestParam("pageSize") int pageSize,@RequestParam("startTime") Timestamp startTime,
+			@RequestParam("endTime") Timestamp endTime) {
+		return (List<CreditRecord>) RestService.getByPageTime(pageIndex, pageSize,startTime,endTime, "CreditRecord");
+	}
+	@RequestMapping("/getCreditRecordByPageUser")
+	public List<CreditRecord> getCreditRecordByPageUser(@RequestParam("pageIndex") int pageIndex,
+			@RequestParam("pageSize") int pageSize,@RequestParam("userID") long userID) {
+		return (List<CreditRecord>) RestService.getByPage1(pageIndex, pageSize,userID,"userID", "CreditRecord");
+	}
+	@RequestMapping("/getCreditRecordByPageOrg")
+	public List<CreditRecord> getCreditRecordByPageOrg(@RequestParam("pageIndex") int pageIndex,
+			@RequestParam("pageSize") int pageSize,@RequestParam("CreditRecord_CreditOrganizationID") long CreditRecord_CreditOrganizationID) {
+		return (List<CreditRecord>) RestService.getByPage1(pageIndex, pageSize,CreditRecord_CreditOrganizationID,"CreditOrganizationID", "CreditRecord");
+	}
+	@RequestMapping("/getCreditRecordByPageUO")
+	public List<CreditRecord> getCreditRecordByPageUO(@RequestParam("pageIndex") int pageIndex,
+			@RequestParam("pageSize") int pageSize,@RequestParam("userID") long userID,@RequestParam("CreditRecord_CreditOrganizationID") long CreditRecord_CreditOrganizationID) {
+		return (List<CreditRecord>) RestService.getByPage2(pageIndex, pageSize,userID,"userID",CreditRecord_CreditOrganizationID,"CreditOrganizationID", "CreditRecord");
+	}
+	@RequestMapping("/getCreditRecordByID")
+	public Object getCreditRecordByID(@RequestParam("CreditRecord_ID") long id) {
+		return  RestService.getByID(id, "CreditRecord");
+	}
+	@RequestMapping("/getBillByPageIndex")
+	public List<Bill> getBillByPageIndex(@RequestParam("pageIndex") int pageIndex,
+			@RequestParam("pageSize") int pageSize) {
+		return (List<Bill>) RestService.getByPage(pageIndex, pageSize, "Bill");
 	}
 }
