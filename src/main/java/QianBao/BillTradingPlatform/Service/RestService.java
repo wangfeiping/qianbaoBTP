@@ -217,13 +217,15 @@ public class RestService {
 			return null;
 		}
 	}
-	public Object getByPage(int pageIndex, int pageSize,String table) {
+
+	public Object getByPage(int pageIndex, int pageSize, String table) {
 		String sql = "select * from tb_" + table + " where " + table + "_id>"
-	+(pageSize*(pageIndex-1)) +" and "+ table + "_id<="+(pageSize*pageIndex);
+				+ (pageSize * (pageIndex - 1)) + " and " + table + "_id<="
+				+ (pageSize * pageIndex);
 		List<Map<String, Object>> list = jdbcTemplate.queryForList(sql);
 		if (list.isEmpty())
 			return null;
 		return list;
 	}
-	
+
 }
