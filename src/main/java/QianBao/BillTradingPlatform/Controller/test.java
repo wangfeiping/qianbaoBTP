@@ -3,6 +3,7 @@ package QianBao.BillTradingPlatform.Controller;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -24,7 +25,8 @@ public class test {
 	private testService testService;
 
 	@RequestMapping("/test1")
-	public List<testEntity> getScoreList() {
-		return testService.getList();
+	public String getScoreList(@RequestBody String s) {
+		System.out.println(s);
+		return s;
 	}
 }
