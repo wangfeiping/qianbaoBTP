@@ -219,6 +219,34 @@ public class RestService {
 		}
 	}
 
+	public Object withdrawCredit(long CreditOrganization_ID, long User_ID,
+			double Credit_Limit) {
+		try {
+			String sql = "select User_CreditID from tb_user where User_ID="
+					+ User_ID;
+			List<Credit> list = jdbcTemplate.query(sql,
+					new RowMapper<Credit>() {
+
+						@Override
+						public Credit mapRow(ResultSet rs, int rowNum)
+								throws SQLException {
+							Credit credit = new Credit();
+							credit.setCredit_ID(rs.getLong(1));
+							return credit;
+						}
+					});
+			long Credit_ID = list.get(0).getCredit_ID();
+			jdbcTemplate.update(
+					"update tb_credit set Credit_CreditOrganizationID=?,Credit_Limit=?"
+							+ " where Credit_ID=" + Credit_ID, new Object[] {
+							CreditOrganization_ID, 0 });
+			return getByID(Credit_ID, "credit");
+		} catch (Exception e) {
+			System.out.println(e);
+			return null;
+		}
+	}
+
 	public Object getByPage(int pageIndex, int pageSize, String table) {
 		String sql = "select * from tb_" + table + " where " + table + "_id>"
 				+ (pageSize * (pageIndex - 1)) + " and " + table + "_id<="
@@ -228,35 +256,58 @@ public class RestService {
 			return null;
 		return list;
 	}
-	
-	
-	public Object getByPageTime(int pageIndex, int pageSize,Timestamp startTime,Timestamp endTime,String table) {
+
+	public Object getByPageTime(int pageIndex, int pageSize,
+			Timestamp startTime, Timestamp endTime, String table) {
 		String sql = "select * from tb_" + table + " where " + table + "_id>"
-	+(pageSize*(pageIndex-1)) +" and "+ table + "_id<="+(pageSize*pageIndex)
-	+" and "+ table + "_Timestamp>='"+startTime+"' and "+ table + "_Timestamp<='"+endTime+"'";
+				+ (pageSize * (pageIndex - 1)) + " and " + table + "_id<="
+				+ (pageSize * pageIndex) + " and " + table + "_Timestamp>='"
+				+ startTime + "' and " + table + "_Timestamp<='" + endTime
+				+ "'";
 		List<Map<String, Object>> list = jdbcTemplate.queryForList(sql);
 		if (list.isEmpty())
 			return null;
 		return list;
 	}
-	public Object getByPage1(int pageIndex, int pageSize,long conditionvalue,String condition,String table) {
+
+	public Object getByPage1(int pageIndex, int pageSize, long conditionvalue,
+			String condition, String table) {
 		String sql = "select * from tb_" + table + " where " + table + "_id>"
-	+(pageSize*(pageIndex-1)) +" and "+ table + "_id<="+(pageSize*pageIndex)
-	+" and "+ table + "_"+condition+" = "+ conditionvalue ;
+				+ (pageSize * (pageIndex - 1)) + " and " + table + "_id<="
+				+ (pageSize * pageIndex) + " and " + table + "_" + condition
+				+ " = " + conditionvalue;
 		List<Map<String, Object>> list = jdbcTemplate.queryForList(sql);
 		if (list.isEmpty())
 			return null;
 		return list;
 	}
-	public Object getByPage2(int pageIndex, int pageSize,long conditionvalue1,String condition1,long conditionvalue2,String condition2,String table) {
+
+	public Object getByPage2(int pageIndex, int pageSize, long conditionvalue1,
+			String condition1, long conditionvalue2, String condition2,
+			String table) {
 		String sql = "select * from tb_" + table + " where " + table + "_id>"
-	+(pageSize*(pageIndex-1)) +" and "+ table + "_id<="+(pageSize*pageIndex)
-	+" and "+ table + "_"+condition1+" = "+ conditionvalue1
-	+" and "+ table + "_"+condition2+" = "+ conditionvalue2;
+				+ (pageSize * (pageIndex - 1)) + " and " + table + "_id<="
+				+ (pageSize * pageIndex) + " and " + table + "_" + condition1
+				+ " = " + conditionvalue1 + " and " + table + "_" + condition2
+				+ " = " + conditionvalue2;
 		List<Map<String, Object>> list = jdbcTemplate.queryForList(sql);
 		if (list.isEmpty())
 			return null;
 		return list;
 	}
-	
+
+	public Object deal(long Deal_SellerID, long Deal_BuyerID, long Deal_BillID) {
+		try {
+			jdbcTemplate
+					.update("insert into tb_deal(Deal_SellerID,Deal_BuyerID,Deal_BillID) values(?,?,?)",
+							new Object[] { Deal_SellerID, Deal_BuyerID,
+									Deal_BillID });
+			long Deal_ID = getSequence("tb_deal");
+			return jdbcTemplate.queryForList(
+					"select * from tb_deal where deal_id=" + Deal_ID).get(0);
+		} catch (Exception e) {
+			System.out.println(e);
+			return null;
+		}
+	}
 }
