@@ -47,13 +47,12 @@ docker run -d --name=membersrvc \
 
 ```
 docker run -v /home/gychain/fabric/core.yaml:/go/src/github.com/hyperledger/fabric/peer/core.yaml \
-    -v /home/gychain/fabric/examples/chaincode/go:/go/src/github.com/hyperledger/fabric/examples/chaincode/go/ \
+    -v /home/gychain/fabric/chaincode:/go/src/github.com/chaincode/ \
     --name=vp0 \
-    -e CORE_PEER_ID=node_vp0 \
+    -e CORE_PEER_ID=vp0 \
     -e CORE_PBFT_GENERAL_N=4 \
-    --net="host" \
     --restart=unless-stopped \
-    -it \
+    -p 7051:7051
     -v /var/run/docker.sock:/var/run/docker.sock \
     -e CORE_LOGGING_LEVEL=debug \
     -e CORE_PEER_ADDRESSAUTODETECT=false \
@@ -64,6 +63,23 @@ docker run -v /home/gychain/fabric/core.yaml:/go/src/github.com/hyperledger/fabr
 ```
 
 \# hyperledger fabric 验证节点vp1
+
+```
+docker run -v /home/gychain/fabric/core.yaml:/go/src/github.com/hyperledger/fabric/peer/core.yaml \
+    -v /home/gychain/fabric/chaincode:/go/src/github.com/chaincode/ \
+    --name=vp1 \
+    -e CORE_PEER_ID=vp1 \
+    -e CORE_PBFT_GENERAL_N=4 \
+    --restart=unless-stopped \
+    -p 7052:7051
+    -e CORE_LOGGING_LEVEL=debug \
+    -e CORE_PEER_ADDRESSAUTODETECT=false \
+    -e CORE_PEER_NETWORKID=dev \
+    -e CORE_PEER_VALIDATOR_CONSENSUS_PLUGIN=pbft \
+    -e CORE_PBFT_GENERAL_TIMEOUT_REQUEST=10s \
+    -e CORE_PEER_DISCOVERY_ROOTNODE=127.0.0.1:7051 \
+    yeasy/hyperledger-peer:0.6-dp peer node start
+```
 
 \# hyperledger fabric 验证节点vp2
 
