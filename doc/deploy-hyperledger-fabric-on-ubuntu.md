@@ -12,15 +12,16 @@
 
 \# 下载镜像并创建标签
 
-> 因为fabric 处于孵化期，每个版本变化较大，因此选用功能基本具备并且使用比较广泛的0.6 版本进行部署、开发和测试。  
->  
+因为fabric 处于孵化期，每个版本变化较大，因此选用功能基本具备并且使用比较广泛的0.6 版本进行部署、开发和测试。  
+
 > docker pull yeasy/hyperledger:0.6-dp  
->  
-> fabric 部署链码时会使用一个基础镜像创建链码的镜像（好象可以在core.yaml 中配置），然后作为容器启动运行。因此需要使用指定的hyperledger/fabric-baseimage:latest 命名基础镜像。  
->  
+
+fabric 部署链码时会使用一个基础镜像创建链码的镜像（好象可以在core.yaml 中配置），然后作为容器启动运行。因此需要使用指定的hyperledger/fabric-baseimage:latest 命名基础镜像。  
+
 > docker tag yeasy/hyperledger:0.6-dp hyperledger/fabric-baseimage:latest  
->  
-> fabric 节点镜像，包含成员服务程序membersrvc 与节点服务程序peer 。  
+
+fabric 节点镜像，包含成员服务程序membersrvc 与节点服务程序peer 。  
+
 > docker pull yeasy/hyperledger-peer:0.6-dp  
 
 \# 查看下载镜像
@@ -29,13 +30,13 @@
 
 \# 导出、导入镜像
 
-> 为了避免每次部署重新下载镜像，可以将镜像导出为文件，在没有这些镜像的服务器直接通过导出数据文件导入镜像。
->  
+为了避免每次部署重新下载镜像，可以将镜像导出为文件，在没有这些镜像的服务器直接通过导出数据文件导入镜像。  
+
 > \# 导出  
 > docker save yeasy/hyperledger-peer:0.6-dp > ./yeasy_hyperledger-peer_0.6-dp.tar  
 > docker save yeasy/hyperledger:0.6-dp > ./yeasy_hyperledger_0.6-dp.tar
 >  
-> \# 导入
+> \# 导入  
 > docker load < ./yeasy_hyperledger-peer_0.6-dp.tar  
 > docker load < ./yeasy_hyperledger_0.6-dp.tar
 
@@ -56,10 +57,10 @@ docker run -d --name=membersrvc \
 
 \# enrollID 与enrollSecret 可用取值
 
+在membersrvc.yaml 文件中，预置了多个键值对，之后启动的每个节点都需要选用其中一个（不能重复），配置为每个vp 节点core.yaml 文件的enrollID 与enrollSecret 。  
+
 ```
 fabric/membersrvc/membersrvc.yaml  
-  
-在membersrvc.yaml 文件中，预置了多个键值对，之后启动的每个节点都需要选用其中一个（不能重复），配置为每个vp 节点core.yaml 文件的enrollID 与enrollSecret 。  
   
 ......
 test_vp0: 4 MwYpmSRjupbT
